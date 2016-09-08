@@ -3,6 +3,8 @@ A twitter bot which will reply to tweets and direct messages containing a name o
 
 This project was mainly done to help me learn python.
 
+This project IS NOT finished/working yet.
+
 ## List of commands needed to make this work (for my memory):
  * sudo apt-get install python3
  * sudo apt-get update && sudo apt-get install python3-pip

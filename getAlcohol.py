@@ -16,13 +16,13 @@ def getAlcoholByName(name):
     QUERY = (
         "SELECT barnivore_product_name, barnivore_status, barnivore_country " + 
         "FROM barnivore_product " +
-        "WHERE lower(barnivore_product_name) like lower('%" + name + "%')"
+        "WHERE lower(barnivore_product_name) like lower('% \%s %')"
     )
     
     try:
         conn = psycopg2.connect(connectionString)
         cur = conn.cursor()
-        cur.execute(QUERY)
+        cur.execute(QUERY, (name))
         result = cur.fetchall()
 
     except(psycopg2.DatabaseError, e):

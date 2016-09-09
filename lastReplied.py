@@ -13,8 +13,8 @@ result = None
 
 def getLastReplied(messageType):
     QUERY = (
-        "SELECT item_id from twitter_bot_vac_last_replied_id where name = '" + messageType + "'"
-    )
+        "SELECT item_id from twitter_bot_vac_last_replied_id where name = '{0}'"
+    ).format(messageType)
     
     try:
         conn = psycopg2.connect(connectionString)
@@ -36,8 +36,8 @@ def getLastReplied(messageType):
 
 def setLastReplied(messageType, itemId):
     QUERY = (
-        "UPDATE twitter_bot_vac_last_replied_id SET item_id = '" + itemId + "' WHERE name = '" + messageType + "'"
-    )
+        "UPDATE twitter_bot_vac_last_replied_id SET item_id = '${0}' WHERE name = '${1}'"
+    ).format(itemId, messageType)
     
     try:
         conn = psycopg2.connect(connectionString)

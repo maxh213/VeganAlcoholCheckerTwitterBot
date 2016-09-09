@@ -1,5 +1,6 @@
 import tweepy
 import secretConstants
+import cgi
 from getAlcohol import getAlcoholByName
 from lastReplied import getLastReplied, setLastReplied
 
@@ -12,32 +13,38 @@ api = tweepy.API(auth)
 #functions need to be declared above calling them it seems...
 
 def formatReply(result):
-    if result is None:
-            reply = "Sorry, we cannot find the name of the alcohol your specified in our database"
-    else: 
-        if result[2] == '':
-            reply = result[0] + " is " + result[1] + "."
-        elif result[0][2] != '' and result[2]:
-            reply = result[0] + " brewed in " + result[2] + " is " + result[1] + "." 
+    if result[2] == '':
+        reply = result[0] + " is " + result[1] + "."
+    elif result[0][2] != '' and result[2]:
+        reply = result[0] + " brewed in " + result[2] + " is " + result[1] + "." 
     return reply
 
 def getDMs():
     lastRepliedDmId = getLastReplied('DM')
-    dms = api.direct_messages(full_text=True, since_id=lastRepliedDmId)
+    return api.direct_messages(full_text=True, since_id=lastRepliedDmId)
+
+def replyToUnansweredDMs(dms):
     for dm in dms:
         results = getAlcoholByName(dm.text)
-        if len(results) > 12:
-            replyToDm = "Sorry, I know a lot of alcohol with that in the name, could you be more specific?"
+        if len(results) > 10:
+            replyToDm = "Sorry but I know a lot of alcohol with that in the name, could you be more specific?"
+            api.send_direct_message(screen_name=dm.sender_screen_name, text=replyToDm)
+        elif results == []:
+            replyToDm = "Unfortunately I cannot find the name of the alcohol you specified in my database, apologies."
             api.send_direct_message(screen_name=dm.sender_screen_name, text=replyToDm)
         else:
             for result in results:
                 replyToDm = formatReply(result)
                 api.send_direct_message(screen_name=dm.sender_screen_name, text=replyToDm)
-
         print(dm.sender_screen_name + " sent " + dm.text)
         setLastReplied('DM', dm.id_str)
+    
+def main():
+    dms = getDMs()
+    replyToUnansweredDMs(dms)
 
-getDMs()
+
+main()
 
 
 def tweetAboutAlcohol(alcoholName):

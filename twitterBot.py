@@ -39,7 +39,9 @@ def formatReply(result):
 def getDMs():
     lastRepliedDmId = getLastReplied(secretConstants.DM_FLAG)
     #reverse so the oldest messages answered first
-    return api.direct_messages(full_text=True, since_id=lastRepliedDmId).reverse()
+    dms = api.direct_messages(full_text=True, since_id=lastRepliedDmId)
+    dms.reverse()
+    return dms
 
 def replyToUnansweredDMs(dms):
     print("---REPLYING TO DMS---")
@@ -62,6 +64,7 @@ def replyToUnansweredDMs(dms):
 def get_mentions():
     last_replied_mention_id = getLastReplied(secretConstants.MENTION_FLAG)
     #return api.mentions_timeline(since_id=last_replied_mention_id).reverse()
+    #ITERATION BUG WAS CAUSE BY THE REVERSE() ABOVE
     return api.mentions_timeline()
 
 def reply_to_unanswered_mentions(mentions):

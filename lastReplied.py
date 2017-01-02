@@ -22,7 +22,7 @@ def getLastReplied(messageType):
         cur.execute(QUERY)
         result = cur.fetchone()
 
-    except(psycopg2.DatabaseError, e):
+    except psycopg2.DatabaseError as e:
         print('Error %s' % e)    
 
     finally:
@@ -36,7 +36,7 @@ def getLastReplied(messageType):
 
 def setLastReplied(messageType, itemId):
     QUERY = (
-        "UPDATE twitter_bot_vac_last_replied_id SET item_id = '${0}' WHERE name = '${1}'"
+        "UPDATE twitter_bot_vac_last_replied_id SET item_id = '{0}' WHERE name = '{1}'"
     ).format(itemId, messageType)
     
     try:
@@ -46,7 +46,7 @@ def setLastReplied(messageType, itemId):
         conn.commit()
         cur.close()
 
-    except(psycopg2.DatabaseError, e):
+    except psycopg2.DatabaseError as e:
         print('Error %s' % e)    
 
     finally:

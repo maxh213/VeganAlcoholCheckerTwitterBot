@@ -13,19 +13,20 @@ result = None
 
 def getAlcoholByName(name):
     name = fixTypingErrors(name)
+    name = "%" + name + "%"
     QUERY = (
         "SELECT barnivore_product_name, barnivore_status, barnivore_country " + 
         "FROM barnivore_product " +
-        "WHERE lower(barnivore_product_name) like lower('% \%s %')"
+        "WHERE lower(barnivore_product_name) like lower(%s)"
     )
-    
+        
     try:
         conn = psycopg2.connect(connectionString)
         cur = conn.cursor()
-        cur.execute(QUERY, (name))
+        cur.execute(QUERY, (name,))
         result = cur.fetchall()
 
-    except(psycopg2.DatabaseError, e):
+    except psycopg2.DatabaseError as e:
         print('Error %s' % e)    
 
     finally:
@@ -33,6 +34,7 @@ def getAlcoholByName(name):
             conn.close()
 
     return result
+    
 
 def fixTypingErrors(name):
     name = name.lower() 
@@ -41,6 +43,6 @@ def fixTypingErrors(name):
     return name
 
 #Uncomment for testing
-#getAlcoholByName("guiness")
+#print(getAlcoholByName("Budweiser"))
 
 

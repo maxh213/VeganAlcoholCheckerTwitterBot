@@ -1,6 +1,7 @@
 import tweepy
 import secretConstants
 import cgi
+import time
 from getAlcohol import getAlcoholByName
 from lastReplied import getLastReplied, setLastReplied
 
@@ -8,11 +9,14 @@ auth = tweepy.OAuthHandler(secretConstants.CONSUMER_KEY, secretConstants.CONSUME
 auth.set_access_token(secretConstants.ACCESS_TOKEN, secretConstants.ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
+MESSAGE_BUFFER_SECONDS = 2.5
+
 #alcoholName = "GUINESS"
 #tweetAboutAlcohol(alcoholName)
 #functions need to be declared above calling them it seems...
 
 def formatReply(result):
+    print (result)
     if result[2] == '':
         reply = result[0] + " is " + result[1] + "."
     elif result[0][2] != '' and result[2]:
@@ -24,7 +28,9 @@ def getDMs():
     return api.direct_messages(full_text=True, since_id=lastRepliedDmId)
 
 def replyToUnansweredDMs(dms):
+    dms.reverse() #this is so old messages are answered first
     for dm in dms:
+        print(dm.sender_screen_name + " sent " + dm.text)
         results = getAlcoholByName(dm.text)
         if len(results) > 10:
             replyToDm = "Sorry but I know a lot of alcohol with that in the name, could you be more specific?"
@@ -34,13 +40,16 @@ def replyToUnansweredDMs(dms):
             api.send_direct_message(screen_name=dm.sender_screen_name, text=replyToDm)
         else:
             for result in results:
+                time.sleep(MESSAGE_BUFFER_SECONDS)
                 replyToDm = formatReply(result)
                 api.send_direct_message(screen_name=dm.sender_screen_name, text=replyToDm)
-        print(dm.sender_screen_name + " sent " + dm.text)
         setLastReplied('DM', dm.id_str)
     
 def main():
     dms = getDMs()
+    #for dm in dms:
+    #    print(dm.text)
+    #    setLastReplied('DM', dm.id_str)
     replyToUnansweredDMs(dms)
 
 

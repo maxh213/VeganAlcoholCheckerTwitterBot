@@ -31,8 +31,6 @@ def getLastReplied(messageType):
 
     return result[0]
 
-#print(getLastReplied("DM"))
-#print(getLastReplied("MENTION"))
 
 def setLastReplied(messageType, itemId):
     QUERY = (

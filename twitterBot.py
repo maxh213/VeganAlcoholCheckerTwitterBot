@@ -10,7 +10,7 @@ auth = tweepy.OAuthHandler(secretConstants.CONSUMER_KEY, secretConstants.CONSUME
 auth.set_access_token(secretConstants.ACCESS_TOKEN, secretConstants.ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
-MINUTES_BETWEEN_RANDOM_TWEETS = 20
+MINUTES_BETWEEN_RANDOM_TWEETS = 200
 MESSAGE_BUFFER_SECONDS = 2
 TWITTER_HANDLE = '@veganAlcoholChe'
 
@@ -91,6 +91,7 @@ def tweet_about_random_alcohol():
     last_tweet_date = datetime.datetime.date(last_tweet.created_at)
     last_tweet_datetime = datetime.datetime.combine(last_tweet_date, last_tweet_time)
     current_time = datetime.datetime.now()
+    print(current_time > (last_tweet_datetime + datetime.timedelta(minutes=MINUTES_BETWEEN_RANDOM_TWEETS)))
     if current_time > (last_tweet_datetime + datetime.timedelta(minutes=MINUTES_BETWEEN_RANDOM_TWEETS)):
         tweet = formatReply(get_random_alcohol_info_for_tweet())
         api.update_status(status=tweet)

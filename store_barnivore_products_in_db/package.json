@@ -1,0 +1,15 @@
+{
+  "name": "get_alcohol_products_from_barnivore",
+  "version": "1.0.0",
+  "description": "",
+  "main": "getTheseAlcohols.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Max Harris",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^6.1.0",
+    "request": "^2.74.0"
+  }
+}

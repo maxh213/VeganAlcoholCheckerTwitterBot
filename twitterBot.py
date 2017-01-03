@@ -10,7 +10,8 @@ auth = tweepy.OAuthHandler(secretConstants.CONSUMER_KEY, secretConstants.CONSUME
 auth.set_access_token(secretConstants.ACCESS_TOKEN, secretConstants.ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
-MINUTES_BETWEEN_RANDOM_TWEETS = 200
+FRANCE_TIME_DIFFERENCE = 60 #my server is in France which messes up the timings
+MINUTES_BETWEEN_RANDOM_TWEETS = 20 + FRANCE_TIME_DIFFERENCE
 MESSAGE_BUFFER_SECONDS = 2
 TWITTER_HANDLE = '@veganAlcoholChe'
 

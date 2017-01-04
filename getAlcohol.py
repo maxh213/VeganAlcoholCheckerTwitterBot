@@ -63,6 +63,8 @@ def fixTypingErrors(name):
     name = name.lower() 
     if name == "guiness":
         name = "guinness"
+    if name == "absolute vodka":
+        name = "absolut vodka"
     return name
 
 #Uncomment for testing

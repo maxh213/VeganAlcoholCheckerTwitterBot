@@ -8,6 +8,7 @@ var companyURLs = [];
 var products = [];
 var insertCompanyQueryString = 'INSERT INTO barnivore_company (barnivore_id, barnivore_company_name, barnivore_country) VALUES ($1, $2, $3)';
 var insertProductQueryString = 'INSERT INTO barnivore_product (barnivore_id, barnivore_company_id, barnivore_product_name, barnivore_status, barnivore_created_on, barnivore_updated_on, barnivore_booze_type, barnivore_country) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+
 getCompanyJson([beerURL, wineURL, liquorURL]);
 
 /**
@@ -25,7 +26,14 @@ function getCompanyJson(urls) {
 		url: url,
 		json: true
 	}, function (error, response, body) {
-		if (error) console.log(error);
+		if (error) {
+			console.log(error);
+			if (urls.length === 0) {
+				getProductJson(companyURLs);
+			} else {
+				getCompanyJson(urls);
+			}
+		}
 		if (!error && response.statusCode === 200) {
 			console.log(url + " loaded!");
 			for (var i = 0; i < body.length; i++) {
@@ -35,7 +43,6 @@ function getCompanyJson(urls) {
 			}
 			if (urls.length === 0) {
 				getProductJson(companyURLs);
-				//console.log("done");
 			} else {
 				getCompanyJson(urls);
 			}
@@ -49,7 +56,14 @@ function getProductJson(urls) {
 		url: url,
 		json: true
 	}, function (error, response, body) {
-		if (error) console.log(error);
+		if (error) {
+			console.log(error);
+			if (urls.length === 0) {
+				console.log("Product load complete.")
+			} else {
+				getProductJson(urls);
+			}
+		}
 		if (!error && response.statusCode === 200) {
 			console.log(url + " loaded!");
 			for (var i = 0; i < body.company.products.length; i++) {
@@ -69,7 +83,6 @@ function getProductJson(urls) {
 			products.push(body.company.products);
 			if (urls.length === 0) {
 				console.log("Product load complete.")
-				console.log(products);
 			} else {
 				getProductJson(urls);
 			}

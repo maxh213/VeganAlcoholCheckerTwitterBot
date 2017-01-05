@@ -8,11 +8,11 @@ from lastReplied import getLastReplied, setLastReplied
 
 auth = tweepy.OAuthHandler(secretConstants.CONSUMER_KEY, secretConstants.CONSUMER_SECRET)
 auth.set_access_token(secretConstants.ACCESS_TOKEN, secretConstants.ACCESS_TOKEN_SECRET)
-api = tweepy.API(auth)
+api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_count=10, retry_delay=5, retry_errors=5)
 
 MINUTES_BETWEEN_RANDOM_TWEETS = 60 * 4
 MESSAGE_BUFFER_SECONDS = 2
-SLEEP_SECONDS_BETWEEN_RESPONSES = 4
+SLEEP_SECONDS_BETWEEN_RESPONSES = 5
 TWITTER_HANDLE = '@veganAlcoholChe'
 URL = 'vacfb.site/a?n='
 

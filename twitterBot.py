@@ -12,7 +12,7 @@ api = tweepy.API(auth)
 
 MINUTES_BETWEEN_RANDOM_TWEETS = 60 * 4
 MESSAGE_BUFFER_SECONDS = 2
-SLEEP_SECONDS_BETWEEN_RESPONSES = 15
+SLEEP_SECONDS_BETWEEN_RESPONSES = 4
 TWITTER_HANDLE = '@veganAlcoholChe'
 URL = 'vacfb.site/a?n='
 
@@ -118,9 +118,6 @@ def main():
         reply_to_unanswered_mentions(mentions)
         tweet_about_random_alcohol()
         time.sleep(SLEEP_SECONDS_BETWEEN_RESPONSES)
-
-
-
 
 main()
 
